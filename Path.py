@@ -5,6 +5,7 @@ from YandexDisk import list_sourse
 path = 'C:\\Users\\ThanDoma v2.0'
 path = 'C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents'
 result = os.walk(path)
+the_lack_of = []
 
 def path_in_holder():
     path = 'C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents'
@@ -13,10 +14,10 @@ def path_in_holder():
     
     for i in range(lens):
         for el in os.walk(path):
-            # print(el[2])    
             if list_sourse()[0][i] in el[2]:
-                continue
-            else: return list_sourse()[0][i]
+                n=1
+            else: the_lack_of.append(list_sourse()[0][i])
+    return the_lack_of
 
 def checking_files():
     b = list_sourse()[0]

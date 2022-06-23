@@ -1,10 +1,8 @@
 from YandexDisk import *
 from Path import *
 
-kol_vo = list_sourse()[1]
+kol_vo = len(path_in_holder())
+
 for i in range(kol_vo):
-    if path_in_holder()==True:
-        continue
-    else: 
-        file = path_in_holder()
-        dl_file(file)
+    file = path_in_holder()[i]
+    dl_file(file)

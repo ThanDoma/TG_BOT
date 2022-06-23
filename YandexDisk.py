@@ -9,7 +9,6 @@ def list_sourse():
     lens = len(spisok)
     for i in range(lens):
         d.append(spisok[i]['name'])
-        # print(*d)
     return d, lens
 
 
