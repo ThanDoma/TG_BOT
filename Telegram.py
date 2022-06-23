@@ -10,12 +10,11 @@ from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
 from YandexDisk import list_sourse
-from YandexDisk import dl_file
 
 button_help = 'Помощь'
 button_spisok = 'Список'
 button_pre_download = 'Скачать'
-button_download = ''
+button_download = 'Скачать'
 # ----------------------------------------------------------------------------------------------------------
 def button_pre_download_handler(update: Update, context: CallbackContext):
     update.message.reply_text(
@@ -94,7 +93,8 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
     updater.start_polling()
-    updater.idle()
+    updater.idle()      
 # ----------------------------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
     main()
