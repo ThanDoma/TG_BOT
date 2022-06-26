@@ -22,7 +22,6 @@ def button_pre_download_handler(update: Update, context: CallbackContext):
     )
     
     # button_pre_download_handler(chat_id=update.message.chat_id[-1], context=context)
-
 # ----------------------------------------------------------------------------------------------------------
 def button_download_handler(chat_id, context: CallbackContext):
         updater = Updater(

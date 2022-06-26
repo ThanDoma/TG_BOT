@@ -1,18 +1,33 @@
+from numpy import character
 import yadisk
+from Test import *
 
 y = yadisk.YaDisk(token='AQAAAAAT_OoiAADLW9gGFT5KI0gFvFYOzyvLsso')
 
-#Цикл, создающий список литературы
-def list_sourse():
-    spisok = list(y.listdir('disk:/Metodichka'))
-    d = list()
-    lens = len(spisok)
+liter = []
+
+
+
+def chairs_list():
+    chairs = []
+    
+    lens = len(list(y.listdir('disk:/Metodichka')))
+
     for i in range(lens):
-        d.append(spisok[i]['name'])
-    return d, lens
+        chair = list(y.listdir('disk:/Metodichka'))
+        chairs.append(chair[i]['name'])
 
+    return chairs
 
-def dl_file(file):
-    for i in range(list_sourse()[1]):
-        name = f'C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{file}'
-        y.download(f'disk:/Metodichka/{list_sourse()[0][i]}', (name))
+chair = chairs_list()
+chair_one_new = []
+
+def dl_file():
+
+    for i in range(len(chair)):
+        chair_one_len = len(list(y.listdir(f'disk:/Metodichka/{chair[i]}')))
+        for j in range(chair_one_len):
+            chair_one = list(y.listdir(f'disk:/Metodichka/{chair[i]}'))
+            file = chair_one[j]['name']
+            name = f'C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{chair[i]}\\{file}'
+            y.download(f'disk:/Metodichka/{chair[i]}/{file}', (name))
