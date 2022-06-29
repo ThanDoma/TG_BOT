@@ -8,7 +8,6 @@ from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
-from YandexDisk import chairs_sourse, literature_sourse
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
