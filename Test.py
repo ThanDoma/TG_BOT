@@ -9,4 +9,5 @@ with open('chairs.json') as f:
 print(templates)
 
 for i in range(len(templates)):
-    pass
+    key = str(templates[i].keys())[12:-3]
+    

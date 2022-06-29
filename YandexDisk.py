@@ -6,28 +6,9 @@ import json
 
 y = yadisk.YaDisk(token='AQAAAAAT_OoiAADLW9gGFT5KI0gFvFYOzyvLsso')
 
-liter = []
+liter = []    
 
-AIS = [] # Кафедра автоматизированных информационных систем органов внутренних дел
-Admin_Activ = [] # Кафедра административной деятельности органов внутренних дел
-Admin_Law = [] # Кафедра административного права
-RESaSMC = [] # Кафедра радиотехнических систем и комплексов охранного мониторинга
-Math = [] # Кафедра математики и моделирования систем
-Ru_and_Foreign = [] # Кафедра русского и иностранных языков
-Info_SaT = [] # Кафедра инфокоммуникационных систем и технологий
-Info_Sec = [] # Кафедра информационной безопасности
-Crime = [] # Кафедра криминалистики
-Fire_train = [] # Кафедра огневой подготовки
-OperInvActiv = [] # Кафедра оперативно-разыскной деятельности
-Psych_and_Ped = [] # Кафедра психологии и педагогики
-Com_Sec_and_Tech_Exp = [] # Кафедра компьютерной безопасности и технической экспертизы
-Soc_Hum_Eco_Leg_discip = [] # Кафедра социально-гуманитарных, экономических и правовых дисциплин
-TST = [] # Кафедра тактико-специальной подготовки
-THSL = [] # Кафедра теории и истории государства и права
-CrimeLaw_and_Criminilogy = [] # Кафедра уголовного права и криминологии
-Crim_proc = [] # Кафедра уголовного процесса
-PT = [] # Кафедра физической подготовки
-Physics_and_RE = [] # Кафедра физики и радиоэлектроники      
+names = ["AIS", "Admin_Activ", "Admin_Law", "RESaSMC", "Math", "Ru_and_Foreign", "Info_SaT", "Info_Sec", "Fire_train", "Crime", "OperInvActiv", "Psych_and_Ped", "Com_Sec_and_Tech_Exp", "Soc_Hum_Eco_Leg_discip", "TST", "THSL", "CrimeLaw_and_Criminilogy", "Crim_proc", "PT", "Physics_and_RE"]
 
 def chairs_list():
     chairs = []
@@ -45,8 +26,6 @@ chair_one_new = []
 
 def literature_list():
     file_name = "chairs.json"
-    # with open("chairs.json", "w") as f:
-    #     pass
     for i in range(len(chair)):
         chair_one_len = len(list(y.listdir(f'disk:/Metodichka/{chair[i]}')))
         for j in range(chair_one_len):
