@@ -1,99 +1,73 @@
-from turtle import update
+from telegram.ext import Updater, CommandHandler
+from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from xml.dom.minidom import Document
-from telegram import Update
-from telegram import ReplyKeyboardRemove
-from telegram import KeyboardButton
-from telegram import ReplyKeyboardMarkup
+from telegram import InlineQueryResultArticle, InputTextMessageContent
+from telegram.ext import Updater, CommandHandler
+from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from telegram.ext import CommandHandler
-from telegram.ext import CallbackContext
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
-from YandexDisk import list_sourse
+from YandexDisk import chairs_sourse, literature_sourse
 
-button_help = 'Помощь'
-button_spisok = 'Список'
-button_pre_download = 'Скачать'
-button_download = 'Скачать'
-# ----------------------------------------------------------------------------------------------------------
-def button_pre_download_handler(update: Update, context: CallbackContext):
-    update.message.reply_text(
-        text='Введите код "',
-    )
-    
-    # button_pre_download_handler(chat_id=update.message.chat_id[-1], context=context)
-# ----------------------------------------------------------------------------------------------------------
-def button_download_handler(chat_id, context: CallbackContext):
-        updater = Updater(
-            token = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8',
-            use_context=True
-    )
-        text = update.message.text()
-        updater.bot.send_document(chat_id=chat_id,document=open(f"C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{list_sourse()[0][text[-1]]}", "rb"))
-# ----------------------------------------------------------------------------------------------------------
-def button_spisok_handler(update: Update, context: CallbackContext):
+TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
+updater = Updater(token=TOKEN)
+dispatcher = updater.dispatcher
 
-    lens = list_sourse()[1]
-    for j in range(lens):
-        update.message.reply_text(        
-            text=f'{j+1}. {list_sourse()[0][j]}',
-    )
-# ----------------------------------------------------------------------------------------------------------
-def button_help_handler(update: Update, context: CallbackContext):
-    update.message.reply_text(
-        text='Кнопка "Список" выдает список доступной литературы',
-    )
-    update.message.reply_text(
-        text='Кнопка "Скачать" скачивает выбранный файл',
-        # reply_markup=ReplyKeyboardRemove(),
-    )
-# ----------------------------------------------------------------------------------------------------------
-def message_handler(update: Update, context: CallbackContext):
+def chair(update, context):
+    pass
 
-    text = update.message.text
+# функция обработки команды '/start'
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text="I'm a bot, please talk to me!")
 
-    if text.lower() == button_help.lower():
-        return button_help_handler(update=update, context=context)
-    elif text.lower() == button_spisok.lower():
-        return button_spisok_handler(update=update, context=context)
-    elif text.lower() == button_pre_download.lower():
-        return button_pre_download_handler(update=update, context=context)
-    elif text.lower() == button_download.lower():
-        return button_download_handler(update=update, context=context)
+def help(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                            text = "Для просмотра дуступных кафедр введите /chair\n"
+                                   "Для просмотра списка литературы введите /spisok 'номер категории'\n"
+                                   "Для скачивания введите /caps 'код документа'")
 
-    reply_markup = ReplyKeyboardMarkup(
-        keyboard=[
-            [
-                KeyboardButton(text=button_help)
-            ],
-            [
-                KeyboardButton(text=button_spisok)
-            ],
-            [
-                KeyboardButton(text=button_download)
-            ]
-        ],
-        resize_keyboard=True,
-    )
+# функция обработки команды '/caps'
+def caps(update, context):
+    if context.args:
+        text_caps = context.args[0]
+        context.bot.send_message(chat_id=update.effective_chat.id, 
+                                text=text_caps)
+        updater.bot.send_document(chat_id=update.message.chat.id,document=open(f"C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{literature_sourse()[0][int(text_caps)]}", "rb"))                
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, 
+                                text='No command argument')
+        context.bot.send_message(chat_id=update.effective_chat.id, 
+                                text='send: /caps argument')
 
-    update.message.reply_text(
-        text='Нажми на кнопку ниже', 
-        reply_markup=reply_markup
-    )
-# ----------------------------------------------------------------------------------------------------------
-def main():
-    print('Start')
+# функция обработки не распознных команд
+def unknown(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text="Sorry, I didn't understand that command.")
 
-    updater = Updater(
-        token = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8',
-        use_context=True
-    )
+# обработчик команды '/start'
+start_handler = CommandHandler('start', start)
+dispatcher.add_handler(start_handler)
 
-    updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
+#обработчик команды '/chair'
+chair_handler = CommandHandler('chair', chair)
+dispatcher.add_handler(chair_handler)  
 
-    updater.start_polling()
-    updater.idle()      
-# ----------------------------------------------------------------------------------------------------------
+# обработчик команды '/help'
+help_handler = CommandHandler('help', help)
+dispatcher.add_handler(help_handler)  
 
-if __name__ == '__main__':
-    main()
+# обработчик команды '/caps'
+caps_handler = CommandHandler('caps', caps)
+dispatcher.add_handler(caps_handler)
+
+# обработчик не распознных команд
+unknown_handler = MessageHandler(Filters.command, unknown)
+dispatcher.add_handler(unknown_handler)
+
+# запуск прослушивания сообщений
+updater.start_polling()
+
+# обработчик нажатия Ctrl+C
+updater.idle()
