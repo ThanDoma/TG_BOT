@@ -8,6 +8,7 @@ from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
+from Test import *
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
@@ -23,9 +24,7 @@ def start(update, context):
 
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, 
-                            text = "Для просмотра дуступных кафедр введите /chair\n"
-                                   "Для просмотра списка литературы введите /spisok 'номер категории'\n"
-                                   "Для скачивания введите /caps 'код документа'")
+                            text = "Для скачивания введите /caps 'код документа'")
 
 # функция обработки команды '/caps'
 def caps(update, context):

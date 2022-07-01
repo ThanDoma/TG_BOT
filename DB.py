@@ -1,16 +1,22 @@
 import sqlite3
 from sqlite3 import Error
 from YandexDisk import chairs_list, literature_list
+from Test import *
+from random import randint
+import json
 
 connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db')
 cursor = connection.cursor()
-cur = cursor.execute("SELECT * FROM chair")
 
-chairs = chairs_list()
 chairs_add = []
 lenst = len(cursor.fetchall())
 
 
+
+
+
+names = ["AIS", "Admin_Activ", "Admin_Law", "RESaSMC", "Math", "Ru_and_Foreign", "Info_SaT", "Info_Sec", "Fire_train", "Crime", "OperInvActiv", "Psych_and_Ped", "Com_Sec_and_Tech_Exp", "Soc_Hum_Eco_Leg_discip", "TST", "THSL", "CrimeLaw_and_Criminilogy", "Crim_proc", "PT", "Physics_and_RE"]
+names.sort()
 
 def create_connection(path):
     connection = None
@@ -22,78 +28,46 @@ def create_connection(path):
 
     return connection
 
-literature = literature_list()
-liter_add = []
-len_lit = len(cursor.fetchall())
-import yadisk
-
-
-def chair_add():
+def chair_add(names):
     
     cursor.execute("SELECT * FROM chair")
-    chairs_add = chairs
     ch = cursor.fetchall()
     
-    for i in range(lenst):
-        if ch[i][0] in chairs:
-            chairs_add.remove(ch[i][0])
-
-    
-    for i in range(len(chairs_add)):
-        chairs_add.append(str(chairs_add[i]))
-        ch = chairs_add[i]
+    for i in range(len(names)):
+        ch = names[i]
         cursor.execute("INSERT INTO chair (chair) VALUES (?)", (ch,))
         connection.commit()
 
-def literature_add():
+def literature_add(keys, lits):
 
-    cursor.execute("SELECT * FROM literature")
-    liter_add = literature
-    lit = cursor.fetchall()
+    for i in range(len(keys)):
+        id = names.index(keys[i])
+        cursor.execute("INSERT INTO literature(id, lit, num) VALUES (?, ?, ?)", (id+1, lits[i], i))
+    connection.commit()
 
-    for i in range(len_lit):
-        pass
+def key_chairs():
+    keys = []
+    lits = []
 
-def add():
-    pass
+    with open('chairs.json') as f:
+        file_content = f.read()
+        templates = json.loads(file_content)
 
-# def literature_add():
-    
-#     cursor.execute("SELECT * FROM chair")
-#     chairs_add = chairs
-#     ch = cursor.fetchall()
-    
-#     for i in range(lenst):
-#         if ch[i][0] in chairs:
-#             chairs_add.remove(ch[i][0])
+    for i in range(len(templates)):
+        key = str(templates[i].keys())[12:-3]
+        keys.append(key)
 
-    
-#     for i in range(len(chairs_add)):
-#         chairs_add.append(str(chairs_add[i]))
-#         ch = chairs_add[i]
-#         cursor.execute("INSERT INTO chair (chair) VALUES (?)", (ch,))
-#         connection.commit()
+        lit = templates[i][key]
+        lits.append(lit)
+        
 
-chair_add()
+    return keys, lits
 
+keys_lits = key_chairs()
 
-AIS = [] # Кафедра автоматизированных информационных систем органов внутренних дел
-Admin_Activ = [] # Кафедра административной деятельности органов внутренних дел
-Admin_Law = [] # Кафедра административного права
-RESaSMC = [] # Кафедра радиотехнических систем и комплексов охранного мониторинга
-Math = [] # Кафедра математики и моделирования систем
-Ru_and_Foreign = [] # Кафедра русского и иностранных языков
-Info_SaT = [] # Кафедра инфокоммуникационных систем и технологий
-Info_Sec = [] # Кафедра информационной безопасности
-Crime = [] # Кафедра криминалистики
-Fire_train = [] # Кафедра огневой подготовки
-OperInvActiv = [] # Кафедра оперативно-разыскной деятельности
-Psych_and_Ped = [] # Кафедра психологии и педагогики
-Com_Sec_and_Tech_Exp = [] # Кафедра компьютерной безопасности и технической экспертизы
-Soc_Hum_Eco_Leg_discip = [] # Кафедра социально-гуманитарных, экономических и правовых дисциплин
-TST = [] # Кафедра тактико-специальной подготовки
-THSL = [] # Кафедра теории и истории государства и права
-CrimeLaw_and_Criminilogy = [] # Кафедра уголовного права и криминологии
-Crim_proc = [] # Кафедра уголовного процесса
-PT = [] # Кафедра физической подготовки
-Physics_and_RE = [] # Кафедра физики и радиоэлектроники           
+keys = keys_lits[0]
+lits = keys_lits[1]
+
+key_chairs()    
+chair_add(names) 
+literature_add(keys, lits)
