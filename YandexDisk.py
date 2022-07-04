@@ -270,15 +270,6 @@ def literature_list():
 
                 with open(file_name, "w") as file:
                     json.dump(data, file,indent=4)
-    
-                # with open("chairs.json", "w") as write_file:
-                #     json.dump(Physics_and_RE, write_file, indent=4)
-                # print(type(files))
-            # liter.append(file)
-
-    # return liter
-
-
 
 def dl_file():
 
@@ -289,10 +280,3 @@ def dl_file():
             file = chair_one[j]['name']
             name = f'C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{chair[i]}\\{file}'
             y.download(f'disk:/Metodichka/{chair[i]}/{file}', (name))
-
-
-
-
-
-# literature_list()
-# dl_file()
