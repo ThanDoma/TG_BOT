@@ -17,7 +17,7 @@ dispatcher = updater.dispatcher
 # функция обработки команды '/start'
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, 
-                             text="I'm a bot, please talk to me!")
+                             text="")
 
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, 
@@ -43,15 +43,11 @@ def caps(update, context):
 # функция обработки не распознных команд
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, 
-                             text="Sorry, I didn't understand that command.")
+                             text="Неизвестная команда")
 
 # обработчик команды '/start'
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
-
-#обработчик команды '/chair'
-# chair_handler = CommandHandler('chair', chair)
-# dispatcher.add_handler(chair_handler)  
 
 # обработчик команды '/help'
 help_handler = CommandHandler('help', help)

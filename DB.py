@@ -1,7 +1,5 @@
 import sqlite3
 from sqlite3 import Error
-# from YandexDisk import chairs_list, literature_list
-# from Test import *
 from random import randint
 import json
 
@@ -10,13 +8,6 @@ cursor = connection.cursor()
 
 chairs_add = []
 lenst = len(cursor.fetchall())
-
-
-
-
-
-names = ["AIS", "Admin_Activ", "Admin_Law", "RESaSMC", "Math", "Ru_and_Foreign", "Info_SaT", "Info_Sec", "Fire_train", "Crime", "OperInvActiv", "Psych_and_Ped", "Com_Sec_and_Tech_Exp", "Soc_Hum_Eco_Leg_discip", "TST", "THSL", "CrimeLaw_and_Criminilogy", "Crim_proc", "PT", "Physics_and_RE"]
-names.sort()
 
 def create_connection(path):
     connection = None
@@ -38,7 +29,7 @@ def chair_add(names):
         cursor.execute("INSERT INTO chair (chair) VALUES (?)", (ch,))
         connection.commit()
 
-def literature_add():
+def literature_add(names):
 
     keys_lits = key_chairs()
 
