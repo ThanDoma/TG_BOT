@@ -8,14 +8,11 @@ from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
-from DB import read_literature
+from DB import read_literature, read_chair
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
-
-def chair(update, context):
-    pass
 
 # функция обработки команды '/start'
 def start(update, context):
@@ -29,14 +26,14 @@ def help(update, context):
 # функция обработки команды '/caps'
 def caps(update, context):
 
-    
-
-    literature = read_literature
     if context.args:
         text_caps = context.args[0]
         context.bot.send_message(chat_id=update.effective_chat.id, 
                                 text=text_caps)
-        updater.bot.send_document(chat_id=update.message.chat.id,document=open(f"C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{literature_sourse()[0][int(text_caps)]}", "rb"))                
+        txt = text_caps.split("-")
+        chair = read_literature(int(txt[0]), int(txt[1]))
+        lit = read_chair(int(txt[0]))
+        updater.bot.send_document(chat_id=update.message.chat.id,document=open(f"C:\\Users\\ThanDoma v2.0\\Desktop\\Проект ЯП 3\\Documents\\{lit}\\{chair}", "rb"))                
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, 
                                 text='No command argument')
@@ -53,8 +50,8 @@ start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
 #обработчик команды '/chair'
-chair_handler = CommandHandler('chair', chair)
-dispatcher.add_handler(chair_handler)  
+# chair_handler = CommandHandler('chair', chair)
+# dispatcher.add_handler(chair_handler)  
 
 # обработчик команды '/help'
 help_handler = CommandHandler('help', help)
