@@ -1,7 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 from YandexDisk import chairs_list, literature_list
-from Test import *
+# from Test import *
 from random import randint
 import json
 
@@ -62,6 +62,80 @@ def key_chairs():
         
 
     return keys, lits
+
+def read_literature(id, num):
+    try:
+        connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db')
+        cursor = connection.cursor()
+        print("Подключен к SQLite")
+        id = id
+        num = num
+        cursor = connection.cursor()
+        sqlite_select_query = """SELECT * FROM literature"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        records = list(records[id])
+        new_records = records[:2]
+        new_records = new_records[::-1]
+        print(new_records)
+        check = [id, num]
+        print(check)
+        if check == new_records:
+            print(records[id])
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print()
+    finally:
+        if connection:
+            connection.close()
+            print()
+    return records[id]
+
+def read_literature(id, num):
+    try:
+        connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db')
+        cursor = connection.cursor()
+        id = id
+        num = num
+        cursor = connection.cursor()
+        sqlite_select_query = """SELECT * FROM literature"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        records = list(records[id])
+        new_records = records[:2]
+        check = [id, num]
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print()
+    finally:
+        if connection:
+            connection.close()
+            print()
+    return records[2]
+
+def read_chair(id, num):
+    try:
+        connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db')
+        cursor = connection.cursor()
+        id = id
+        num = num
+        cursor = connection.cursor()
+        sqlite_select_query = """SELECT * FROM chairs"""
+        cursor.execute(sqlite_select_query)
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print()
+    finally:
+        if connection:
+            connection.close()
+            print()
+    return records[2]
 
 keys_lits = key_chairs()
 

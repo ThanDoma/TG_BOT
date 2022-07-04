@@ -8,7 +8,7 @@ from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
-from Test import *
+from DB import read_literature
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
@@ -28,6 +28,10 @@ def help(update, context):
 
 # функция обработки команды '/caps'
 def caps(update, context):
+
+    
+
+    literature = read_literature
     if context.args:
         text_caps = context.args[0]
         context.bot.send_message(chat_id=update.effective_chat.id, 
