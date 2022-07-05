@@ -6,5 +6,6 @@ names.sort()
 
 YandexDisk.dl_file()
 YandexDisk.literature_list()
+DB.create_table()
 DB.chair_add(names)
 DB.literature_add(names)

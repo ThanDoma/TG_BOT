@@ -19,6 +19,12 @@ def create_connection(path):
 
     return connection
 
+def create_table():
+    cursor.execute("""CREATE TABLE chair(id INTEGER PRIMARY KEY AUTOINCREMENT, chair TEXT)""")
+    cursor.execute("""CREATE TABLE literature(id INTEGER, num INTEGER NOT NULL, lit TEXT NOT NULL,
+    FOREIGN KEY (id) REFERENCES chair(id))""")
+    connection.commit()
+
 def chair_add(names):
     
     cursor.execute("SELECT * FROM chair")
