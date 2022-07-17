@@ -2,8 +2,11 @@ import sqlite3
 from sqlite3 import Error
 from random import randint
 import json
+from numpy import record
 
-connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db')
+from regex import P
+
+connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db', check_same_thread=False)
 cursor = connection.cursor()
 
 chairs_add = []
@@ -35,6 +38,14 @@ def chair_add(names):
         cursor.execute("INSERT INTO chair (chair) VALUES (?)", (ch,))
         connection.commit()
 
+def regist_users(user_id):
+
+    cursor.execute("SELECT * FROM regist_users")
+    ch = user_id
+
+    cursor.execute("INSERT INTO regist_users (id) VALUES (?)", (ch,))    
+    connection.commit()
+
 def literature_add(names):
 
     keys_lits = key_chairs()
@@ -65,6 +76,28 @@ def key_chairs():
 
     return keys, lits
 
+def check_id(user_id):
+    k = 0
+    try:
+        cursor.connection.cursor()
+        user_id = user_id
+        sqlite_select_query = """SELECT * FROM regist_users"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        for i in range(len(records)):
+            if user_id["id"]==records[i][0]:
+                k+=1
+                
+    except sqlite3.Error as error:
+        print()
+    finally:
+        if connection:
+            print()
+
+    if k==1:
+        return True
+    else: return False
+
 def read_literature(id, num):
     try:
         connection = sqlite3.connect('D:\SQLiteStudio\SQL_project.db')
@@ -88,7 +121,6 @@ def read_literature(id, num):
         print()
     finally:
         if connection:
-            connection.close()
             print()
     return records[num][2]
 
@@ -107,6 +139,5 @@ def read_chair(id):
         print()
     finally:
         if connection:
-            connection.close()
             print()
     return records[id][1]

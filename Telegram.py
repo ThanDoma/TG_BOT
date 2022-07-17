@@ -1,16 +1,17 @@
+from email import message
 import logging
 import traceback
 from telegram.ext import Updater, CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from xml.dom.minidom import Document
-from telegram import Update, ParseMode
+from telegram import Update, ParseMode, User
 from telegram.ext import Updater, CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
-from DB import read_literature, read_chair
+from DB import read_literature, read_chair, regist_users, check_id
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
@@ -65,20 +66,55 @@ def error_handler(update, context):
 
     if "Errno 2" in tb_string:
         message = (f"Документ не найден, проверьте правильность введенного кода")
-
+        
     elif "File must be non-empty" in tb_string:
         message = (f"Попытка скачать пустой документ") 
 
+    else: message = (f'Неизвестная ошибка')
+
     # Отправляем сообщение разработчику
     context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
+
+def root(update, context):
+
+    user_id = update.message.from_user
+    check = check_id(user_id)
+    if check==True:
+        message = (f'У Вас есть root права')
+    else: message = (f'У Вас нет root прав')
+
+    context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
+
+
+def reg_user(update, context):
+
+    user_id = update.message.from_user
+    
+    check = check_id(user_id)
+
+    if check==True:
+        message = (f'Вы уже зарегистрированы')
+        context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
+    else: 
+        message = (f'Вы не зарегистрированы, сейчас мы это исправим')
+        context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
+        regist_users(user_id["id"])
+        message = (f'Готово')
+        context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
+    return True
 
 if __name__ == '__main__':
 
     updater = Updater(TOKEN)
     dispatcher = updater.dispatcher
 
-    # Зарегистрируем команды...
-    dispatcher.add_handler(CommandHandler('start', start))
+    # регистрация пользователя
+    regist_user = CommandHandler('reg', reg_user)
+    dispatcher.add_handler(regist_user)
+
+    # проверка root прав
+    roots = CommandHandler('root', root)
+    dispatcher.add_handler(roots)
 
     # ...и обработчик ошибок
     dispatcher.add_error_handler(error_handler)
