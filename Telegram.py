@@ -1,6 +1,8 @@
+from dis import dis
 from email import message
 import logging
 import traceback
+import telegram
 from telegram.ext import Updater, CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from xml.dom.minidom import Document
@@ -12,6 +14,7 @@ from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
 from DB import read_literature, read_chair, regist_users, check_id
+from folders import create, view_folders
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
@@ -75,6 +78,7 @@ def error_handler(update, context):
     # Отправляем сообщение разработчику
     context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
 
+# проверка root прав
 def root(update, context):
 
     user_id = update.message.from_user
@@ -85,7 +89,29 @@ def root(update, context):
 
     context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
 
+# создание директории
+def create_folder(update, context):
 
+    if context.args:
+        text_caps = context.args[0]
+        
+    message = create(text_caps)
+    context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
+
+# добавить в директорию
+def add_in_folder(update, context):
+
+    pass
+
+# список доступных директорий
+def view_folder(update, context):
+
+    message = view_folders()
+
+    for i in range(len(message)):
+        context.bot.send_message(chat_id=update.message.chat.id, text=message[i], parse_mode=ParseMode.HTML)
+
+# регистрация пользователя
 def reg_user(update, context):
 
     user_id = update.message.from_user
@@ -111,6 +137,14 @@ if __name__ == '__main__':
     # регистрация пользователя
     regist_user = CommandHandler('reg', reg_user)
     dispatcher.add_handler(regist_user)
+
+    # Создание папки
+    create_fold = CommandHandler('create', create_folder)
+    dispatcher.add_handler(create_fold)
+
+    # просмотр директории
+    view = CommandHandler('view', view_folder)
+    dispatcher.add_handler(view)
 
     # проверка root прав
     roots = CommandHandler('root', root)
