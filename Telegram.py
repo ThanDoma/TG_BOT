@@ -14,7 +14,7 @@ from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
 from DB import read_literature, read_chair, regist_users, check_id
-from folders import create, view_folders
+from folders import create, view_folders, view_one_folder
 
 TOKEN = '5123928550:AAEXVFMdn5Q45eh37Yj4yT7Epa2QBa8bHl8'
 updater = Updater(token=TOKEN)
@@ -104,9 +104,20 @@ def add_in_folder(update, context):
     pass
 
 # список доступных директорий
-def view_folder(update, context):
+def dir_folders(update, context):
 
     message = view_folders()
+
+    for i in range(len(message)):
+        context.bot.send_message(chat_id=update.message.chat.id, text=message[i], parse_mode=ParseMode.HTML)
+
+# список файлов в директории
+def one_folder(update, context):
+
+    if context.args:
+        text_caps = context.args[0]
+
+    message = view_one_folder(text_caps)
 
     for i in range(len(message)):
         context.bot.send_message(chat_id=update.message.chat.id, text=message[i], parse_mode=ParseMode.HTML)
@@ -142,8 +153,12 @@ if __name__ == '__main__':
     create_fold = CommandHandler('create', create_folder)
     dispatcher.add_handler(create_fold)
 
-    # просмотр директории
-    view = CommandHandler('view', view_folder)
+    # Просмотр содержимого директории
+    view_dir = CommandHandler('view_one', one_folder)
+    dispatcher.add_handler(view_dir)
+
+    # просмотр директорий
+    view = CommandHandler('view', dir_folders)
     dispatcher.add_handler(view)
 
     # проверка root прав

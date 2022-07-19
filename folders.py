@@ -10,15 +10,20 @@ def create(name_folder):
         return ("Создать директорию %s не удалось. Возможно она уже существует, либо неверно указано имя директории" % name_folder)
     else:
         return ("Успешно создана директория %s " % name_folder)
-    
+
+# просмотр доступных директорий
 def view_folders():
 
     return os.listdir(path)
 
-def view_one_folder():
-    
-    pass
+# просмотр выбранной директории
+def view_one_folder(dir):
 
+    content = os.listdir(f'{path}\\{dir}')
+    
+    return content
+
+# добавить файл в директорию
 def add_file_in_folder():
 
     pass
