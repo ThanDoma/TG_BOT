@@ -16,7 +16,7 @@ def view_folders():
     return os.listdir(path)
 
 def view_one_folder():
-
+    
     pass
 
 def add_file_in_folder():
