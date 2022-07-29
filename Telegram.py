@@ -7,12 +7,13 @@ from telegram.ext import Updater, CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from xml.dom.minidom import Document
 from telegram import Update, ParseMode, User
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, CallbackContext
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import MessageHandler
+from zmq import Message
 from DB import read_literature, read_chair, regist_users, check_id
 from folders import create, view_folders, view_one_folder
 
@@ -98,10 +99,14 @@ def create_folder(update, context):
     message = create(text_caps)
     context.bot.send_message(chat_id=update.message.chat.id, text=message, parse_mode=ParseMode.HTML)
 
-# добавить в директорию
-def add_in_folder(update, context):
+def load():
+    file_info = telegram.bot.get_file(message.document.file_id)
+    downloaded_file = telegram.bot.download_file(file_info.file_path)
 
-    pass
+    src = "D:\\Проект ЯП 3\\Documents\\" + message.document.file_name
+
+    with open(src, 'wb') as new_file:
+        new_file.write(downloaded_file)
 
 # список доступных директорий
 def dir_folders(update, context):
@@ -144,6 +149,12 @@ if __name__ == '__main__':
 
     updater = Updater(TOKEN)
     dispatcher = updater.dispatcher
+
+    
+
+    # добавление файла в директорию
+    # add = CommandHandler('add', add_in_folder)
+    # dispatcher.add_handler(add)
 
     # регистрация пользователя
     regist_user = CommandHandler('reg', reg_user)
